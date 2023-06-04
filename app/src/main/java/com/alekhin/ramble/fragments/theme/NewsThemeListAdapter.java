@@ -1,4 +1,4 @@
-package com.alekhin.ramble;
+package com.alekhin.ramble.fragments.theme;
 
 import android.os.Bundle;
 
@@ -8,8 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class NewsThemeListAdapter extends FragmentStateAdapter {
+import com.alekhin.ramble.fragments.list.NewsListFragment;
 
+public class NewsThemeListAdapter extends FragmentStateAdapter {
     public NewsThemeListAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }

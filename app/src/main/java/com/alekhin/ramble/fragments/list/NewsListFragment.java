@@ -1,4 +1,4 @@
-package com.alekhin.ramble;
+package com.alekhin.ramble.fragments.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.alekhin.ramble.News;
+import com.alekhin.ramble.R;
 import com.alekhin.ramble.databinding.FragmentNewsListBinding;
 
 public class NewsListFragment extends Fragment {

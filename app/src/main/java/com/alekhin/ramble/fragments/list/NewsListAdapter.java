@@ -1,13 +1,17 @@
-package com.alekhin.ramble;
+package com.alekhin.ramble.fragments.list;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alekhin.ramble.News;
 import com.alekhin.ramble.databinding.CardNewsBinding;
+import com.alekhin.ramble.fragments.theme.NewsThemeListFragmentDirections;
 
 import java.util.ArrayList;
 
@@ -27,6 +31,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             binding.newsTitle.setText(news.newsTitle);
             binding.newsDescription.setText(news.newsDescription);
             binding.newsAuthor.setText(news.newsAuthor);
+            binding.newsCard.setOnClickListener(v -> {
+                NavDirections action = NewsThemeListFragmentDirections.actionNewsThemeListFragmentToNewsFragment(news);
+                Navigation.findNavController(v).navigate(action);
+            });
         }
     }
 

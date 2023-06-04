@@ -1,6 +1,7 @@
 package com.alekhin.ramble.fragments.list;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -17,6 +18,10 @@ import java.util.ArrayList;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
     ArrayList<News> newsArrayList = new ArrayList<>();
+
+    public NewsListAdapter(ArrayList<News> newsArrayList) {
+        this.newsArrayList = newsArrayList;
+    }
 
     public static class NewsListViewHolder extends RecyclerView.ViewHolder {
         CardNewsBinding binding;

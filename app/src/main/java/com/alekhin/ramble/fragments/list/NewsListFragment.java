@@ -1,5 +1,7 @@
 package com.alekhin.ramble.fragments.list;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,30 +12,126 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alekhin.ramble.News;
-import com.alekhin.ramble.R;
 import com.alekhin.ramble.databinding.FragmentNewsListBinding;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class NewsListFragment extends Fragment {
     private FragmentNewsListBinding binding;
 
     public static final String TITLE = "Title";
 
-    private final NewsListAdapter newsListAdapter = new NewsListAdapter();
+    ArrayList<News> newsArrayList = new ArrayList<>();
+    ArrayList<String> newsTitle = new ArrayList<>();
+    ArrayList<String> newsLink = new ArrayList<>();
+    ArrayList<String> newsPubDate = new ArrayList<>();
+    ArrayList<String> newsDescription = new ArrayList<>();;
+    ArrayList<String> newsAuthor = new ArrayList<>();;
+
+    private NewsListAdapter newsListAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNewsListBinding.inflate(getLayoutInflater());
 
         // --- CONTENT --- //
-        setAdapter();
+        new ProcessInBackground().execute();
         // --- CONTENT --- //
 
         return binding.getRoot();
     }
 
-    private void setAdapter() {
-        newsListAdapter.addNews(new News(getString(R.string.news_pub_date), getString(R.string.news_title), getString(R.string.news_description), getString(R.string.news_author)));
-        binding.newsList.setAdapter(newsListAdapter);
-        binding.newsList.setLayoutManager(new LinearLayoutManager(requireContext()));
+    private InputStream getInputStream(URL url) {
+        try {
+            return url.openConnection().getInputStream();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    // TODO: THIS IS DEPRECATED, USE BETTER VERSION INSTEAD
+    public class ProcessInBackground extends AsyncTask<Integer, Void, Exception> {
+        ProgressDialog progressDialog = new ProgressDialog(NewsListFragment.this.requireContext());
+        Exception e = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog.setMessage("LOADING...");
+            progressDialog.show();
+            System.out.println("___ LOADING...");
+        }
+
+        @Override
+        protected Exception doInBackground(Integer... integers) {
+            try {
+                URL url = new URL("https://news.rambler.ru/rss/Moscow/");
+
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(false);
+
+                XmlPullParser xpp = factory.newPullParser();
+                xpp.setInput(getInputStream(url), "UTF-8");
+
+                boolean insideItem = false;
+
+                int eventType = xpp.getEventType();
+
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().equalsIgnoreCase("item")) insideItem = true;
+                        else if (xpp.getName().equalsIgnoreCase("title")) {
+                            if (insideItem) newsTitle.add(xpp.nextText());
+                        } else if (xpp.getName().equalsIgnoreCase("link")) {
+                            if (insideItem) newsLink.add(xpp.nextText());
+                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                            if (insideItem) newsPubDate.add(xpp.nextText());
+                        } else if (xpp.getName().equalsIgnoreCase("description")) {
+                            if (insideItem) newsDescription.add(xpp.nextText());
+                        } else if (xpp.getName().equalsIgnoreCase("author")) {
+                            if (insideItem) newsAuthor.add(xpp.nextText());
+                        }
+                    } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
+                        insideItem = false;
+                    }
+
+                    eventType = xpp.next();
+                }
+
+            } catch (MalformedURLException e) {
+                this.e = e;
+            } catch (XmlPullParserException e) {
+                this.e = e;
+            } catch (IOException e) {
+                this.e = e;
+            }
+
+            return e;
+        }
+
+        @Override
+        protected void onPostExecute(Exception e) {
+            super.onPostExecute(e);
+
+            for (int i = 0; i < newsTitle.size(); i++) {
+                newsArrayList.add(new News(newsPubDate.get(i), newsTitle.get(i), newsDescription.get(i), newsAuthor.get(i), newsLink.get(i)));
+            }
+
+            newsListAdapter = new NewsListAdapter(newsArrayList);
+            binding.newsList.setAdapter(newsListAdapter);
+            binding.newsList.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+            progressDialog.dismiss();
+            System.out.println("___ DISMISSED");
+        }
     }
 }

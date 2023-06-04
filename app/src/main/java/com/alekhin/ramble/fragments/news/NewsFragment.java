@@ -1,6 +1,7 @@
 package com.alekhin.ramble.fragments.news;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,19 +36,21 @@ public class NewsFragment extends Fragment {
     }
 
     private void shareNews(View v) {
-        String newsUrl = ""; // TODO: ADD NEWS URL
+        String newsUrl = news.newsLink;
 
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, newsUrl);
         shareIntent.putExtra(Intent.EXTRA_HTML_TEXT, newsUrl);
         shareIntent.setType("text/html");
+
+        startActivity(shareIntent);
     }
 
     private  void readFullArticle(View v) {
-        //Uri newsUri = Uri.parse(_URI_); // TODO: ADD URI
+        Uri newsUri = Uri.parse(news.newsLink);
 
-        //Intent readFullArticleIntent = new Intent(Intent.ACTION_VIEW, newsUri);
-        //startActivity(readFullArticleIntent);
-        // TODO: ADD READING FULL ARTICLE
+        Intent readFullArticleIntent = new Intent(Intent.ACTION_VIEW, newsUri);
+        startActivity(readFullArticleIntent);
     }
 }

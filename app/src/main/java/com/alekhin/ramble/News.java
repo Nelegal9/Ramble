@@ -10,12 +10,14 @@ public class News implements Parcelable {
     public String newsTitle;
     public String newsDescription;
     public String newsAuthor;
+    public String newsLink;
 
-    public News(String newsPubDate, String newsTitle, String newsDescription, String newsAuthor) {
+    public News(String newsPubDate, String newsTitle, String newsDescription, String newsAuthor, String newsLink) {
         this.newsPubDate = newsPubDate;
         this.newsTitle = newsTitle;
         this.newsDescription = newsDescription;
         this.newsAuthor = newsAuthor;
+        this.newsLink = newsLink;
     }
 
     protected News(Parcel in) {
@@ -23,6 +25,7 @@ public class News implements Parcelable {
         newsTitle = in.readString();
         newsDescription = in.readString();
         newsAuthor = in.readString();
+        newsLink = in.readString();
     }
 
     public static final Creator<News> CREATOR = new Creator<News>() {
@@ -48,5 +51,6 @@ public class News implements Parcelable {
         dest.writeString(newsTitle);
         dest.writeString(newsDescription);
         dest.writeString(newsAuthor);
+        dest.writeString(newsLink);
     }
 }

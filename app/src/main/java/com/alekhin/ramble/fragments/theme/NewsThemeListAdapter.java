@@ -1,7 +1,5 @@
 package com.alekhin.ramble.fragments.theme;
 
-import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,23 +8,24 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.alekhin.ramble.fragments.list.NewsListFragment;
 
+import java.util.List;
+
 public class NewsThemeListAdapter extends FragmentStateAdapter {
-    public NewsThemeListAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    private final List<NewsListFragment> newsFragmentList;
+
+    public NewsThemeListAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, List<NewsListFragment> newsFragmentList) {
         super(fragmentManager, lifecycle);
+        this.newsFragmentList = newsFragmentList;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Fragment fragment = new NewsListFragment();
-        Bundle args = new Bundle();
-        args.putInt(NewsListFragment.TITLE, position + 1);
-        fragment.setArguments(args);
-        return fragment;
+        return newsFragmentList.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return newsFragmentList.size();
     }
 }

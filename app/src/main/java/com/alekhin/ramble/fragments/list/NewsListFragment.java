@@ -27,16 +27,20 @@ import java.util.ArrayList;
 public class NewsListFragment extends Fragment {
     private FragmentNewsListBinding binding;
 
-    public static final String TITLE = "Title";
+    private final URL url;
 
-    ArrayList<News> newsArrayList = new ArrayList<>();
-    ArrayList<String> newsTitle = new ArrayList<>();
-    ArrayList<String> newsLink = new ArrayList<>();
-    ArrayList<String> newsPubDate = new ArrayList<>();
-    ArrayList<String> newsDescription = new ArrayList<>();;
-    ArrayList<String> newsAuthor = new ArrayList<>();;
+    private final ArrayList<News> newsArrayList = new ArrayList<>();
+    private final ArrayList<String> newsTitle = new ArrayList<>();
+    private final ArrayList<String> newsLink = new ArrayList<>();
+    private final ArrayList<String> newsPubDate = new ArrayList<>();
+    private final ArrayList<String> newsDescription = new ArrayList<>();
+    private final ArrayList<String> newsAuthor = new ArrayList<>();
 
-    private NewsListAdapter newsListAdapter;
+    private NewsListAdapter newsListAdapter; // TODO: MOVE OUT FROM DEPRECATED METHOD
+
+    public NewsListFragment(URL url) {
+        this.url = url;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +78,6 @@ public class NewsListFragment extends Fragment {
         @Override
         protected Exception doInBackground(Integer... integers) {
             try {
-                URL url = new URL("https://news.rambler.ru/rss/Moscow/");
 
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(false);

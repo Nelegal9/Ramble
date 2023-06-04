@@ -1,7 +1,5 @@
 package com.alekhin.ramble.fragments.list;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -17,7 +15,7 @@ import com.alekhin.ramble.fragments.theme.NewsThemeListFragmentDirections;
 import java.util.ArrayList;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
-    ArrayList<News> newsArrayList = new ArrayList<>();
+    private final ArrayList<News> newsArrayList;
 
     public NewsListAdapter(ArrayList<News> newsArrayList) {
         this.newsArrayList = newsArrayList;
@@ -58,19 +56,4 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     public int getItemCount() {
         return newsArrayList.size();
     }
-
-    /* JUST IN CASE */
-    @SuppressLint("NotifyDataSetChanged")
-    void addNews(News news) {
-        newsArrayList.add(news);
-        notifyDataSetChanged();
-    }
-    /**/
-    /* JUST IN CASE
-    @SuppressLint("NotifyDataSetChanged")
-    void updateNews(ArrayList<News> newsArrayList) {
-        this.newsArrayList = newsArrayList;
-        notifyDataSetChanged();
-    }
-    */
 }

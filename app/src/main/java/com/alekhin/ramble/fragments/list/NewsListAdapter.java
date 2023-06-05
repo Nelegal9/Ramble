@@ -35,7 +35,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             this.binding = binding;
         }
 
-        void bind(News news) {
+        private void bind(News news) {
             binding.newsPubDate.setText(news.newsPubDate);
             binding.newsTitle.setText(news.newsTitle);
             binding.newsDescription.setText(news.newsDescription);

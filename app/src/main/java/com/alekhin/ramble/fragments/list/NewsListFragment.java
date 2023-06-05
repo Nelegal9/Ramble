@@ -37,7 +37,7 @@ public class NewsListFragment extends Fragment {
     private final ArrayList<String> newsDescription = new ArrayList<>();
     private final ArrayList<String> newsAuthor = new ArrayList<>();
 
-    public NewsListAdapter newsListAdapter; // TODO: MOVE OUT FROM DEPRECATED METHOD
+    public NewsListAdapter newsListAdapter;
 
     public NewsListFragment(URL url) {
         this.url = url;
@@ -75,7 +75,6 @@ public class NewsListFragment extends Fragment {
         }
     }
 
-    // TODO: THIS IS DEPRECATED, USE BETTER VERSION INSTEAD
     public class ProcessInBackground extends AsyncTask<Integer, Void, Exception> {
         ProgressDialog progressDialog = new ProgressDialog(NewsListFragment.this.requireContext());
         Exception e = null;

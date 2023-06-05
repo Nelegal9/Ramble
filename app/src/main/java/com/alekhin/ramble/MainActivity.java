@@ -1,40 +1,32 @@
 package com.alekhin.ramble;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.alekhin.ramble.databinding.ActivityMainBinding;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
-    ActivityMainBinding binding;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setDropdownMenu();
-        //setSearch();
-        setViewPager();
+        setNavController();
     }
 
-    private void setDropdownMenu() {
-        ArrayAdapter<String> contentVisibilityArrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.item_news_content_visibility, getResources().getStringArray(R.array.content));
-        binding.newsContentVisibility.setAdapter(contentVisibilityArrayAdapter);
+    private void setNavController() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavHost);
+        if (navHostFragment != null) navController = navHostFragment.getNavController();
     }
 
-    private void setSearch() {
-
-    }
-
-
-    private void setViewPager() {
-        NewsThemeListAdapter newsThemeListAdapter = new NewsThemeListAdapter(getSupportFragmentManager(), getLifecycle());
-        binding.newsThemeList.setAdapter(newsThemeListAdapter);
-
-        new TabLayoutMediator(binding.newsThemeTab, binding.newsThemeList, (tab, position) -> tab.setText("Tab № " + (position + 1))).attach();
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 }

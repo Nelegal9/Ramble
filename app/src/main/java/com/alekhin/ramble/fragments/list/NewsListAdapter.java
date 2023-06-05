@@ -1,7 +1,10 @@
 package com.alekhin.ramble.fragments.list;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavDirections;
@@ -14,11 +17,13 @@ import com.alekhin.ramble.fragments.theme.NewsThemeListFragmentDirections;
 
 import java.util.ArrayList;
 
-public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
+public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> implements Filterable {
     private final ArrayList<News> newsArrayList;
+    private final ArrayList<News> newsArrayListFull;
 
     public NewsListAdapter(ArrayList<News> newsArrayList) {
-        this.newsArrayList = newsArrayList;
+        this.newsArrayListFull = newsArrayList;
+        this.newsArrayList = new ArrayList<>(newsArrayListFull);
     }
 
     public static class NewsListViewHolder extends RecyclerView.ViewHolder {
@@ -56,4 +61,39 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
     public int getItemCount() {
         return newsArrayList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return newsFilter;
+    }
+
+    private final Filter newsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence query) {
+            ArrayList<News> filteredNewsList = new ArrayList<>();
+
+            if (query == null || query.length() == 0) filteredNewsList.addAll(newsArrayListFull);
+            else {
+                for (News news : newsArrayListFull) {
+                    if (news.newsTitle.toLowerCase().contains(query.toString().toLowerCase().trim())) filteredNewsList.add(news);
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredNewsList;
+            results.count = filteredNewsList.size();
+
+            System.out.println("___ RESULT COUNT IS: " + results.count);
+
+            return results;
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence query, FilterResults results) {
+            newsArrayList.clear();
+            newsArrayList.addAll((ArrayList) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

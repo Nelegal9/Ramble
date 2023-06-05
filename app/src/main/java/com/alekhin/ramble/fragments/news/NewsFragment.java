@@ -20,7 +20,6 @@ public class NewsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentNewsBinding binding = FragmentNewsBinding.inflate(inflater);
 
-        // --- CONTENT --- //
         if (getArguments() != null) news = NewsFragmentArgs.fromBundle(getArguments()).getCurrentNews();
 
         binding.currentNewsPubDate.setText(news.newsPubDate);
@@ -30,7 +29,6 @@ public class NewsFragment extends Fragment {
 
         binding.currentNewsShareButton.setOnClickListener(this::shareNews);
         binding.currentNewsReadFullArticleButton.setOnClickListener(this::readFullArticle);
-        // --- CONTENT --- //
 
         return binding.getRoot();
     }

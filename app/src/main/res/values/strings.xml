@@ -1,12 +1,21 @@
 <resources>
     <string name="app_name">Ramble</string>
 
-    <string name="content_visibility">Content visible</string>
-    <string-array name="content">
-        <item>Content visible</item>
-        <item>Content partially visible</item>
-        <item>Headings only</item>
-    </string-array>
+    <string name="login_title">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="login_sign_up">Don\'t have an account? Sign up</string>
+
+    <string name="register_title">Register</string>
+    <string name="sign_up_password">Password (Minimum 6 characters)</string>
+    <string name="sign_up">Sign up</string>
+    <string name="register_sign_in">Already have an account? Sign in</string>
+
+    <string name="failed">Please fill out all fields.</string>
+
+    <string name="current_user">Current_user@mail.com</string>
+    <string name="logout">Log out</string>
 
     <string name="search">Search…</string>
 

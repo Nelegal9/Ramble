@@ -16,6 +16,7 @@ import com.alekhin.ramble.databinding.CardNewsBinding;
 import com.alekhin.ramble.fragments.theme.NewsThemeListFragmentDirections;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> implements Filterable {
     private final ArrayList<News> newsArrayList;
@@ -88,7 +89,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
             @Override
             protected void publishResults(CharSequence query, FilterResults results) {
                 newsArrayList.clear();
-                newsArrayList.addAll((ArrayList) results.values);
+                newsArrayList.addAll((Collection<? extends News>) results.values);
                 notifyDataSetChanged();
             }
         };

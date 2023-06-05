@@ -64,36 +64,33 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
 
     @Override
     public Filter getFilter() {
-        return newsFilter;
-    }
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence query) {
+                ArrayList<News> filteredNewsList = new ArrayList<>();
 
-    private final Filter newsFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence query) {
-            ArrayList<News> filteredNewsList = new ArrayList<>();
-
-            if (query == null || query.length() == 0) filteredNewsList.addAll(newsArrayListFull);
-            else {
-                for (News news : newsArrayListFull) {
-                    if (news.newsTitle.toLowerCase().contains(query.toString().toLowerCase().trim())) filteredNewsList.add(news);
+                if (query == null || query.length() == 0)
+                    filteredNewsList.addAll(newsArrayListFull);
+                else {
+                    for (News news : newsArrayListFull) {
+                        if (news.newsTitle.toLowerCase().contains(query.toString().toLowerCase().trim()))
+                            filteredNewsList.add(news);
+                    }
                 }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredNewsList;
+
+                return results;
             }
 
-            FilterResults results = new FilterResults();
-            results.values = filteredNewsList;
-            results.count = filteredNewsList.size();
-
-            System.out.println("___ RESULT COUNT IS: " + results.count);
-
-            return results;
-        }
-
-        @SuppressLint("NotifyDataSetChanged")
-        @Override
-        protected void publishResults(CharSequence query, FilterResults results) {
-            newsArrayList.clear();
-            newsArrayList.addAll((ArrayList) results.values);
-            notifyDataSetChanged();
-        }
-    };
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            protected void publishResults(CharSequence query, FilterResults results) {
+                newsArrayList.clear();
+                newsArrayList.addAll((ArrayList) results.values);
+                notifyDataSetChanged();
+            }
+        };
+    }
 }

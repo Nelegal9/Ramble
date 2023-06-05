@@ -1,5 +1,6 @@
 package com.alekhin.ramble.fragments.list;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -48,7 +48,6 @@ public class NewsListFragment extends Fragment {
         binding = FragmentNewsListBinding.inflate(getLayoutInflater());
 
         new ProcessInBackground().execute();
-        setSearch();
 
         return binding.getRoot();
     }
@@ -125,17 +124,14 @@ public class NewsListFragment extends Fragment {
                     eventType = xpp.next();
                 }
 
-            } catch (MalformedURLException e) {
-                this.e = e;
-            } catch (XmlPullParserException e) {
-                this.e = e;
-            } catch (IOException e) {
+            } catch (IOException | XmlPullParserException e) {
                 this.e = e;
             }
 
             return e;
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Override
         protected void onPostExecute(Exception e) {
             super.onPostExecute(e);
@@ -147,7 +143,8 @@ public class NewsListFragment extends Fragment {
             newsListAdapter = new NewsListAdapter(newsArrayList);
             binding.newsList.setAdapter(newsListAdapter);
             newsListAdapter.notifyDataSetChanged();
-            binding.newsList.setLayoutManager(new LinearLayoutManager(requireContext()));
+            setSearch();
+            binding.newsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
             progressDialog.dismiss();
             System.out.println("___ DISMISSED");
